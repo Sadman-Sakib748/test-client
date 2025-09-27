@@ -24,9 +24,6 @@ export default function ProductCard({ product }) {
     const incrementQuantity = () => setQuantity((prev) => prev + 1);
     const decrementQuantity = () =>
         setQuantity((prev) => Math.max(1, prev - 1));
-    console.log("Products API Response:", products);
-    console.log("Error:", error);
-    console.log("Loading:", isLoading);
 
    
 
