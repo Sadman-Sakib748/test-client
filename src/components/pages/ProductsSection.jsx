@@ -4,46 +4,32 @@ import { useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { Button } from "../ui/button";
-import {
-  useGetAllProductsQuery,
-} from "@/redux/services/product/productApi";
-import { useGetAllCategoriesQuery } from "@/redux/services/category/categoryApi";
+import { useGetAllProductsQuery } from "@/redux/services/product/productApi";
+
+const categories = [
+  { id: "all", name: "All" },
+  { id: "68d81b988b83c3484936611e", name: "fuite" },
+  { id: "68d81b988b83c3484936611e", name: "vegetable" },
+  { id: "68d81b988b83c3484936611e", name: "salad" },
+];
 
 export function ProductsSection() {
   const [selectedCategory, setSelectedCategory] = useState("all");
-  const [cart, setCart] = useState([]);
 
-  // Fetch categories
-  const { data: categoriesData, isLoading: loadingCategories } = useGetAllCategoriesQuery();
-  const categories = [{ id: "all", name: "All" }, ...(categoriesData?.results || [])];
-  console.log(categoriesData)
+  const { data, error, isLoading } = useGetAllProductsQuery();
+  const products = data?.results || [];
+  console.log(data)
 
-  // Fetch products
-  const { data: productsData, isLoading: loadingProducts, error } = useGetAllProductsQuery();
-  const products = productsData?.results || [];
+  useEffect(() => {
+    if (products.length > 0) console.log("Fetched Products:", products);
+  }, [products]);
 
   const filteredProducts =
     selectedCategory === "all"
       ? products
       : products.filter((product) => product.category === selectedCategory);
 
-  // Handle Add to Cart
-  const handleAddToCart = (product) => {
-    setCart((prev) => {
-      const existing = prev.find((item) => item.id === product._id);
-      if (existing) {
-        return prev.map((item) =>
-          item.id === product._id ? { ...item, quantity: item.quantity + 1 } : item
-        );
-      } else {
-        return [...prev, { id: product._id, name: product.name, price: product.price, quantity: 1, image: product.images?.[0] || "/images/placeholder.svg" }];
-      }
-    });
-
-    alert(`${product.name} added to cart!`);
-  };
-
-  if (loadingCategories || loadingProducts) return <p className="text-center py-10">Loading...</p>;
+  if (isLoading) return <p className="text-center py-10">Loading products...</p>;
   if (error) return <p className="text-center py-10 text-red-500">Failed to load products</p>;
 
   return (
@@ -87,33 +73,29 @@ export function ProductsSection() {
                 : "/images/placeholder.svg";
 
             return (
-              <div
+              <Link
+                href={`/product/${product._id}`}
                 key={product._id}
                 className="group bg-white border border-gray-100 shadow-sm rounded-lg hover:shadow-lg transition-shadow duration-300 p-4 flex flex-col items-center"
               >
-                <Link href={`/product/${product._id}`} className="w-full">
-                  <div className="relative w-full sm:w-[220px] md:w-[258px] h-[180px] sm:h-[200px] md:h-[208px] mb-4 rounded-lg overflow-hidden">
-                    <Image
-                      src={imgSrc}
-                      alt={product.name}
-                      fill
-                      className="object-cover group-hover:scale-105 transition-transform duration-300"
-                    />
-                  </div>
-                  <h3 className="font-semibold text-gray-900 text-lg text-center">{product.name}</h3>
-                  <p className="text-gray-600 mb-3 text-center">
-                    <span className="text-sm">$</span>
-                    <span className="text-lg font-bold">{product.price}</span>
-                    <span className="text-sm"> /kg</span>
-                  </p>
-                </Link>
-                <Button
-                  className="w-full sm:w-[220px] md:w-[258px] bg-orange-500 hover:bg-orange-600 text-white rounded-lg"
-                  onClick={() => handleAddToCart(product)}
-                >
+                <div className="relative w-full sm:w-[220px] md:w-[258px] h-[180px] sm:h-[200px] md:h-[208px] mb-4 rounded-lg overflow-hidden">
+                  <Image
+                    src={imgSrc}
+                    alt={product.name}
+                    fill
+                    className="object-cover group-hover:scale-105 transition-transform duration-300"
+                  />
+                </div>
+                <h3 className="font-semibold text-gray-900 text-lg text-center">{product.name}</h3>
+                <p className="text-gray-600 mb-3 text-center">
+                  <span className="text-sm">$</span>
+                  <span className="text-lg font-bold">{product.price}</span>
+                  <span className="text-sm"> /kg</span>
+                </p>
+                <Button className="w-full sm:w-[220px] md:w-[258px] bg-orange-500 hover:bg-orange-600 text-white rounded-lg">
                   Add to cart
                 </Button>
-              </div>
+              </Link>
             );
           })}
         </div>
