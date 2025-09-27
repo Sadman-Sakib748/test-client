@@ -53,7 +53,7 @@ export function TestimonialsSection() {
                     <p className="text-green-600 font-medium mb-2">Testimonial</p>
                     <h2 className="text-4xl font-bold text-gray-900 mb-4">What Our Customers Say</h2>
                     <p className="text-gray-600 max-w-2xl mx-auto">
-                        Don't just take our word for it - here's what some of our customers have to say about their experience with Fresh Harvest:
+                        Dont just take our word for it  heres what some of our customers have to say about their experience with Fresh Harvest:
                     </p>
                 </div>
 

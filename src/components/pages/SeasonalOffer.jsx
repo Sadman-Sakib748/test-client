@@ -4,6 +4,7 @@ import Image from "next/image"
 import { Button } from "@/components/ui/button"
 import { CountdownTimer } from "./CountdownTimer"
 import backgourn from '@/assets/images/backgourn.jpg'
+import food from '@/assets/images/frood.png'
 
 export function SeasonalOffer() {
     // Target date = 3 days later
