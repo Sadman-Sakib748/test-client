@@ -5,17 +5,12 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Heart, Star, Minus, Plus } from "lucide-react";
-import { useGetProductsQuery } from "@/redux/features/product/product";
+// import { useGetProductsQuery } from "@/redux/features/product/product";
 
 export default function ProductCard({ product }) {
-    const { data: products, error, isLoading } = useGetProductsQuery();
+    // const { data: products, error, isLoading } = useGetProductsQuery();
 
-    console.log("Products API Response:", products);
-    console.log("Error:", error);
-    console.log("Loading:", isLoading);
 
-    if (isLoading) return <p>Loading...</p>;
-    if (error) return <p>Error loading products.</p>;
     const [quantity, setQuantity] = useState(1);
     const [activeTab, setActiveTab] = useState("description");
     const [isFavorite, setIsFavorite] = useState(false);
