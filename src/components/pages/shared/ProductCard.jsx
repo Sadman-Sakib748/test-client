@@ -5,11 +5,11 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Heart, Star, Minus, Plus } from "lucide-react";
-import { useGetAllProductsQuery } from "@/redux/services/product/productApi";
+// import { useGetAllProductsQuery } from "@/redux/services/product/productApi";
 
 
 export default function ProductCard({ product }) {
-    const { data: products, error, isLoading } = useGetAllProductsQuery();
+    // const { data: products, error, isLoading } = useGetAllProductsQuery();
     const [quantity, setQuantity] = useState(1);
     const [activeTab, setActiveTab] = useState("description");
     const [isFavorite, setIsFavorite] = useState(false);
@@ -28,8 +28,7 @@ export default function ProductCard({ product }) {
     console.log("Error:", error);
     console.log("Loading:", isLoading);
 
-    if (isLoading) return <p>Loading...</p>;
-    if (error) return <p>Error loading products.</p>;
+   
 
 
     return (
