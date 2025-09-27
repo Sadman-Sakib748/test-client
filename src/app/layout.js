@@ -2,6 +2,7 @@ import { AntdRegistry } from "@ant-design/nextjs-registry";
 import "./globals.css";
 import AntDProvider from "@/components/Shared/AntDProvider";
 import { Raleway } from "next/font/google";
+import Footer from "@/components/pages/shared/Footer/Footer";
 
 const ralewayFont = Raleway({
   weight: ["100", "300", "400", "500", "700"],
@@ -15,6 +16,7 @@ const RootLayout = ({ children }) => {
         <AntDProvider>
           <AntdRegistry>{children}</AntdRegistry>
         </AntDProvider>
+        <Footer />
       </body>
     </html>
   );
