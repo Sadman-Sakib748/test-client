@@ -132,9 +132,9 @@ export default function NavBar() {
               </p>
 
               <Link href="/shop">
-                <Button className="bg-orange-500 hover:bg-orange-600 text-white w-32 md:w-36 lg:w-40 py-2 md:py-3 lg:py-3 text-sm md:text-lg lg:text-lg rounded-lg">
+                <button className="bg-orange-500 hover:bg-orange-600 text-white w-32 md:w-36 lg:w-40 py-2 md:py-3 lg:py-3 text-sm md:text-lg lg:text-lg rounded-lg">
                   Shop Now
-                </Button>
+                </button>
               </Link>
 
               {/* Promo Card */}
@@ -156,7 +156,7 @@ export default function NavBar() {
                 items-center p-4 gap-3 -ml-18 hover:shadow-lg transition">
 
                   {/* Left Content */}
-                  <div className="flex flex-col justify-center space-y-1.5">
+                  <div className="flex flex-col justify-center space-y-[7px]">
                     <p className="text-[10px] md:text-sm font-bold text-gray-700">✨ Special Offer</p>
                     <p className="text-[9px] md:text-base font-semibold text-gray-900">Fresh Salad</p>
                     <p className="text-[8px] md:text-xs text-gray-600">Up to 70% off</p>
