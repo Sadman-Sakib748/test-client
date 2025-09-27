@@ -16,7 +16,7 @@ export function ProductsSection() {
   // Fetch categories
   const { data: categoriesData, isLoading: loadingCategories } = useGetAllCategoriesQuery();
   const categories = [{ id: "all", name: "All" }, ...(categoriesData?.results || [])];
-  console.log(data)
+  console.log(categoriesData)
 
   // Fetch products
   const { data: productsData, isLoading: loadingProducts, error } = useGetAllProductsQuery();
