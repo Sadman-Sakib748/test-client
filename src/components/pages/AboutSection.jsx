@@ -87,7 +87,7 @@ export function AboutSection() {
                             </p>
                             <p className="mb-6 leading-relaxed text-gray-600">
                                 At Fresh Harvest, we believe that everyone deserves access to
-                                fresh, nutritious, and delicious produce. That's why we work
+                                fresh, nutritious, and delicious produce. Thats why we work
                                 tirelessly to source the best ingredients from trusted local
                                 farmers and growers.
                             </p>
