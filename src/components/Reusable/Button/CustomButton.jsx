@@ -8,7 +8,7 @@ export const SubmitButton = ({ loading, text, func, icon, fullWidth }) => {
       loading={loading}
       icon={icon}
       onClick={func}
-      className={`!bg-primary !text-primaryLight font-bold px-10 ${
+      className={`!bg-primary !text-primaryLight text-black font-bold px-10 ${
         fullWidth && "w-full"
       }`}
     >
