@@ -3,6 +3,7 @@
 import { useState } from "react";
 import Image from "next/image";
 import { Button } from "../ui/button";
+import Link from "next/link";
 
 const mockProducts = [
     { id: "1", productName: "Mushroom", price: 2.3, images: ["/fresh-mushrooms.jpg"], categoryId: "1" },
@@ -60,8 +61,8 @@ export function ProductsSection() {
                                 key={category.id}
                                 variant={selectedCategory === category.id ? "default" : "ghost"}
                                 className={`px-4 sm:px-6 py-2 sm:py-2.5 rounded-md transition-colors whitespace-nowrap ${selectedCategory === category.id
-                                        ? "bg-green-600 text-white hover:bg-green-700"
-                                        : "text-gray-600 hover:text-gray-900 hover:bg-white"
+                                    ? "bg-green-600 text-white hover:bg-green-700"
+                                    : "text-gray-600 hover:text-gray-900 hover:bg-white"
                                     }`}
                                 onClick={() => setSelectedCategory(category.id)}
                             >
@@ -74,7 +75,7 @@ export function ProductsSection() {
                 {/* Products Grid */}
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
                     {filteredProducts.map((product) => (
-                        <div
+                        <Link href={`/product/${product.id}`}
                             key={product.id}
                             className="group bg-white border border-gray-100 shadow-sm rounded-lg hover:shadow-lg transition-shadow duration-300 p-4 flex flex-col items-center"
                         >
@@ -95,7 +96,7 @@ export function ProductsSection() {
                             <Button className="w-full sm:w-[220px] md:w-[258px] bg-orange-500 hover:bg-orange-600 text-white rounded-lg">
                                 Add to cart
                             </Button>
-                        </div>
+                        </Link>
                     ))}
                 </div>
 
