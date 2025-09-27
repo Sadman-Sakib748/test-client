@@ -23,7 +23,7 @@ export default function NavBar() {
 
   return (
     <div className={`relative ${!hideHero ?? 'min-h-screen'} bg-gradient-to-br from-green-50 to-orange-50 overflow-hidden`}>
-      
+
       {/* Background Image */}
       {!hideHero && (
         <div className="absolute top-0 right-0 h-full z-0 w-[200px] sm:w-[300px] md:w-[400px] lg:w-[500px]">
