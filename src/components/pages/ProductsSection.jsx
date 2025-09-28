@@ -4,12 +4,12 @@ import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { Button } from "../ui/button";
-import { useGetAllProductsQuery } from "@/redux/services/product/productApi";
+import { useAddProductMutation, useGetAllProductsQuery } from "@/redux/services/product/productApi";
 import { useGetAllCategoriesQuery } from "@/redux/services/category/categoryApi";
+
 
 export function ProductsSection() {
   const [selectedCategory, setSelectedCategory] = useState("all");
-  const [cart, setCart] = useState([]);
 
   // Fetch categories
   const { data: categoriesData, isLoading: loadingCategories } = useGetAllCategoriesQuery();
@@ -22,33 +22,40 @@ export function ProductsSection() {
   const { data: productsData, isLoading: loadingProducts, error } = useGetAllProductsQuery();
   const products = productsData?.results || [];
 
-  console.log(productsData)
-  // Filter products
-  const filteredProducts = selectedCategory === "all"
-    ? products
-    : products.filter(p =>
-      p.category?._id === selectedCategory || p.category === selectedCategory
-    );
-
-  // Add to Cart
-  const handleAddToCart = (product) => {
-    setCart(prev => {
-      const existing = prev.find(item => item.id === product._id);
-      if (existing) {
-        return prev.map(item => item.id === product._id ? { ...item, quantity: item.quantity + 1 } : item);
-      } else {
-        return [...prev, { id: product._id, name: product.name, price: product.price, quantity: 1, image: product.images?.[0] }];
-      }
-    });
-    alert(`${product.name} added to cart!`);
-  };
+  // Add product mutation
+  const [addProduct, { isLoading: adding }] = useAddProductMutation();
 
   if (loadingCategories || loadingProducts) return <p className="text-center py-10">Loading...</p>;
   if (error) return <p className="text-center py-10 text-red-500">Failed to load products</p>;
 
+  // Filter products
+  const filteredProducts = selectedCategory === "all"
+    ? products
+    : products.filter(p =>
+        p.category?._id === selectedCategory || p.category === selectedCategory
+      );
+
+  // Handle Add to Cart
+  const handleAddToCart = async (product) => {
+    try {
+      await addProduct({
+        productId: product._id,
+        name: product.name,
+        price: product.price,
+        image: product.images?.[0] || "/images/placeholder.svg",
+        quantity: 1,
+      }).unwrap();
+      alert(`${product.name} added to cart successfully!`);
+    } catch (err) {
+      console.error("Failed to add product:", err);
+      alert("Failed to add product to cart.");
+    }
+  };
+
   return (
     <section className="py-16 bg-white relative">
       <div className="container mx-auto px-4 relative z-10">
+        {/* Section Heading */}
         <div className="text-center mb-12">
           <p className="text-green-600 font-medium mb-2">Our Products</p>
           <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-gray-900 mb-4">
@@ -63,10 +70,11 @@ export function ProductsSection() {
               <Button
                 key={_id}
                 variant={selectedCategory === _id ? "default" : "ghost"}
-                className={`px-4 sm:px-6 py-2 sm:py-2.5 rounded-md transition-colors whitespace-nowrap ${selectedCategory === _id
-                  ? "bg-green-600 text-white hover:bg-green-700"
-                  : "text-gray-600 hover:text-gray-900 hover:bg-white"
-                  }`}
+                className={`px-4 sm:px-6 py-2 sm:py-2.5 rounded-md transition-colors whitespace-nowrap ${
+                  selectedCategory === _id
+                    ? "bg-green-600 text-white hover:bg-green-700"
+                    : "text-gray-600 hover:text-gray-900 hover:bg-white"
+                }`}
                 onClick={() => setSelectedCategory(_id)}
               >
                 {name}
@@ -87,11 +95,10 @@ export function ProductsSection() {
                   <Image
                     src={images?.[0] || "/images/placeholder.svg"}
                     alt={name}
-                    width={258} // example width, adjust as needed
-                    height={208} // example height, adjust as needed
+                    width={258}
+                    height={208}
                     className="object-cover rounded-lg group-hover:scale-105 transition-transform duration-300"
                   />
-
                 </div>
                 <h3 className="font-semibold text-gray-900 text-lg text-center">{name}</h3>
                 <p className="text-gray-600 mb-3 text-center">
@@ -100,11 +107,14 @@ export function ProductsSection() {
                   <span className="text-sm"> /kg</span>
                 </p>
               </Link>
+
+              {/* Add to Cart Button */}
               <Button
                 className="w-full sm:w-[220px] md:w-[258px] bg-orange-500 hover:bg-orange-600 text-white rounded-lg"
                 onClick={() => handleAddToCart({ _id, name, price, images })}
+                disabled={adding}
               >
-                Add to cart
+                {adding ? "Adding..." : "Add to cart"}
               </Button>
             </div>
           ))}
