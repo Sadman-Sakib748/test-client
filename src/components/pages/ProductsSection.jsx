@@ -34,19 +34,17 @@ export function ProductsSection() {
         p.category?._id === selectedCategory || p.category === selectedCategory
       );
 
-  // Handle Add to Cart
+  // Handle Add to Cart POST
   const handleAddToCart = async (product) => {
     try {
       await addProduct({
-        productId: product._id,
         name: product.name,
         price: product.price,
-        image: product.images?.[0] || "/images/placeholder.svg",
+        stock: product.stock ?? 1,                        // fallback if undefined
+        category: product.category?._id ?? "default-cat", // fallback category id
+        description: product.description ?? product.name, // fallback description
+        image: product.images?.[0] ?? "/images/placeholder.svg",
         quantity: 1,
-        // send required fields
-        stock: product.stock || 1,
-        category: product.category?._id || "default-category-id",
-        description: product.description || product.name,
       }).unwrap();
       alert(`${product.name} added to cart successfully!`);
     } catch (err) {
@@ -96,7 +94,7 @@ export function ProductsSection() {
               <Link href={`/product/${_id}`} className="w-full">
                 <div className="relative w-full sm:w-[220px] md:w-[258px] h-[180px] sm:h-[200px] md:h-[208px] mb-4 rounded-lg overflow-hidden">
                   <Image
-                    src={images?.[0] || "/images/placeholder.svg"}
+                    src={images?.[0] ?? "/images/placeholder.svg"}
                     alt={name}
                     width={258}
                     height={208}
@@ -125,7 +123,7 @@ export function ProductsSection() {
           ))}
         </div>
 
-        {/* View All Button */}
+        {/* View All Products Button */}
         <div className="text-center mt-6">
           <Link href="/shop">
             <Button className="bg-orange-500 hover:bg-orange-600 text-white rounded-lg px-6 py-2">
