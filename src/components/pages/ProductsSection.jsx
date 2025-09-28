@@ -43,6 +43,10 @@ export function ProductsSection() {
         price: product.price,
         image: product.images?.[0] || "/images/placeholder.svg",
         quantity: 1,
+        // send required fields
+        stock: product.stock || 1,
+        category: product.category?._id || "default-category-id",
+        description: product.description || product.name,
       }).unwrap();
       alert(`${product.name} added to cart successfully!`);
     } catch (err) {
@@ -83,8 +87,8 @@ export function ProductsSection() {
         </div>
 
         {/* Products Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
-          {filteredProducts.map(({ _id, name, price, images }) => (
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-6">
+          {filteredProducts.map(({ _id, name, price, images, stock, category, description }) => (
             <div
               key={_id}
               className="group bg-white border border-gray-100 shadow-sm rounded-lg hover:shadow-lg transition-shadow duration-300 p-4 flex flex-col items-center"
@@ -110,13 +114,24 @@ export function ProductsSection() {
               {/* Add to Cart Button */}
               <Button
                 className="w-full sm:w-[220px] md:w-[258px] bg-blue-600 hover:bg-blue-700 text-white rounded-lg"
-                onClick={() => handleAddToCart({ _id, name, price, images })}
+                onClick={() =>
+                  handleAddToCart({ _id, name, price, images, stock, category, description })
+                }
                 disabled={adding}
               >
                 {adding ? "Adding..." : "Add to Cart"}
               </Button>
             </div>
           ))}
+        </div>
+
+        {/* View All Button */}
+        <div className="text-center mt-6">
+          <Link href="/shop">
+            <Button className="bg-orange-500 hover:bg-orange-600 text-white rounded-lg px-6 py-2">
+              View All Products
+            </Button>
+          </Link>
         </div>
       </div>
     </section>
