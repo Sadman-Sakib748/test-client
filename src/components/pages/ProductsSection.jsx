@@ -27,8 +27,8 @@ export function ProductsSection() {
   const filteredProducts = selectedCategory === "all"
     ? products
     : products.filter(p =>
-        p.category?._id === selectedCategory || p.category === selectedCategory
-      );
+      p.category?._id === selectedCategory || p.category === selectedCategory
+    );
 
   // Add to Cart
   const handleAddToCart = (product) => {
@@ -63,11 +63,10 @@ export function ProductsSection() {
               <Button
                 key={_id}
                 variant={selectedCategory === _id ? "default" : "ghost"}
-                className={`px-4 sm:px-6 py-2 sm:py-2.5 rounded-md transition-colors whitespace-nowrap ${
-                  selectedCategory === _id
-                    ? "bg-green-600 text-white hover:bg-green-700"
-                    : "text-gray-600 hover:text-gray-900 hover:bg-white"
-                }`}
+                className={`px-4 sm:px-6 py-2 sm:py-2.5 rounded-md transition-colors whitespace-nowrap ${selectedCategory === _id
+                  ? "bg-green-600 text-white hover:bg-green-700"
+                  : "text-gray-600 hover:text-gray-900 hover:bg-white"
+                  }`}
                 onClick={() => setSelectedCategory(_id)}
               >
                 {name}
@@ -86,11 +85,13 @@ export function ProductsSection() {
               <Link href={`/product/${_id}`} className="w-full">
                 <div className="relative w-full sm:w-[220px] md:w-[258px] h-[180px] sm:h-[200px] md:h-[208px] mb-4 rounded-lg overflow-hidden">
                   <Image
-                    src={images?.[0] || "/images/placeholder.svg"} // সরাসরি image URL
+                    src={images?.[0] || "/images/placeholder.svg"}
                     alt={name}
-                    fill
-                    className="object-cover group-hover:scale-105 transition-transform duration-300"
+                    width={258} // example width, adjust as needed
+                    height={208} // example height, adjust as needed
+                    className="object-cover rounded-lg group-hover:scale-105 transition-transform duration-300"
                   />
+
                 </div>
                 <h3 className="font-semibold text-gray-900 text-lg text-center">{name}</h3>
                 <p className="text-gray-600 mb-3 text-center">
