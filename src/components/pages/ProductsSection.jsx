@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { Button } from "../ui/button";
@@ -9,6 +9,7 @@ import { useGetAllCategoriesQuery } from "@/redux/services/category/categoryApi"
 
 export function ProductsSection() {
   const [selectedCategory, setSelectedCategory] = useState("all");
+  const [cart, setCart] = useState([]);
 
   // Fetch categories
   const { data: categoriesData, isLoading: loadingCategories } = useGetAllCategoriesQuery();
@@ -34,19 +35,43 @@ export function ProductsSection() {
         p.category?._id === selectedCategory || p.category === selectedCategory
       );
 
-  // Handle Add to Cart POST
+  // Calculate total cart items
+  const totalCartItems = useMemo(() => cart.reduce((acc, item) => acc + item.quantity, 0), [cart]);
+
+  // Handle Add to Cart
   const handleAddToCart = async (product) => {
+    // Update cart locally immediately
+    setCart(prev => {
+      const existing = prev.find(item => item.id === product._id);
+      if (existing) {
+        return prev.map(item =>
+          item.id === product._id ? { ...item, quantity: item.quantity + 1 } : item
+        );
+      } else {
+        return [...prev, {
+          id: product._id,
+          name: product.name,
+          price: product.price,
+          quantity: 1,
+          image: product.images?.[0] ?? "/images/placeholder.svg",
+          stock: product.stock ?? 1,
+          category: product.category?._id ?? "default-cat",
+          description: product.description ?? product.name,
+        }];
+      }
+    });
+
+    // Send POST to backend
     try {
       await addProduct({
         name: product.name,
-        price: product.price,
-        stock: product.stock ?? 1,                        // fallback if undefined
-        category: product.category?._id ?? "default-cat", // fallback category id
-        description: product.description ?? product.name, // fallback description
+        price: product.price ?? 0,
+        stock: product.stock ?? 1,
+        category: product.category?._id ?? "default-cat",
+        description: product.description ?? product.name,
         image: product.images?.[0] ?? "/images/placeholder.svg",
         quantity: 1,
       }).unwrap();
-      alert(`${product.name} added to cart successfully!`);
     } catch (err) {
       console.error("Failed to add product:", err);
       alert("Failed to add product to cart.");
@@ -56,6 +81,13 @@ export function ProductsSection() {
   return (
     <section className="py-16 bg-white relative">
       <div className="container mx-auto px-4 relative z-10">
+        {/* Cart Counter */}
+        <div className="text-right mb-4">
+          <span className="bg-red-500 text-white px-3 py-1 rounded-full font-semibold">
+            Cart: {totalCartItems} item{totalCartItems !== 1 ? "s" : ""}
+          </span>
+        </div>
+
         {/* Section Heading */}
         <div className="text-center mb-12">
           <p className="text-green-600 font-medium mb-2">Our Products</p>
