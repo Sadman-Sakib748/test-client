@@ -70,7 +70,7 @@ export function AboutSection() {
                     </div>
 
                     {/* Right side content */}
-                    <div className="space-y-6 mt-15 md:ml-26 md:w-[461px]">
+                    <div className="space-y-6 mt-15 md:ml-[70px] md:w-[461px]">
                         <div>
                             <p className="inline-block mb-2 rounded-md bg-[#749B3F1A] px-3 py-1 font-medium text-green-600">
                                 About us

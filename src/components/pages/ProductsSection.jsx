@@ -22,6 +22,7 @@ export function ProductsSection() {
   const { data: productsData, isLoading: loadingProducts, error } = useGetAllProductsQuery();
   const products = productsData?.results || [];
 
+  console.log(productsData)
   // Filter products
   const filteredProducts = selectedCategory === "all"
     ? products
