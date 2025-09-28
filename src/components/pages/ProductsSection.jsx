@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { Button } from "../ui/button";
@@ -12,17 +12,33 @@ export function ProductsSection() {
   const [cart, setCart] = useState([]);
 
   // Fetch categories dynamically
-  const { data: categoriesData, isLoading: loadingCategories } = useGetAllCategoriesQuery();
-  const categories = [{ id: "all", name: "All" }, ...(categoriesData?.results || [])];
+  const { data: categoriesData, isLoading: loadingCategories } =
+    useGetAllCategoriesQuery();
+
+  const categories = [
+    { _id: "all", name: "All" },
+    ...(categoriesData?.results || []),
+  ];
 
   // Fetch products
-  const { data: productsData, isLoading: loadingProducts, error } = useGetAllProductsQuery();
+  const {
+    data: productsData,
+    isLoading: loadingProducts,
+    error,
+  } = useGetAllProductsQuery();
+  console.log(productsData)
+
   const products = productsData?.results || [];
 
+  // Filter products based on category
   const filteredProducts =
     selectedCategory === "all"
       ? products
-      : products.filter((product) => product.category === selectedCategory);
+      : products.filter(
+          (product) =>
+            product.category?._id === selectedCategory ||
+            product.category === selectedCategory
+        );
 
   // Handle Add to Cart
   const handleAddToCart = (product) => {
@@ -30,7 +46,9 @@ export function ProductsSection() {
       const existing = prev.find((item) => item.id === product._id);
       if (existing) {
         return prev.map((item) =>
-          item.id === product._id ? { ...item, quantity: item.quantity + 1 } : item
+          item.id === product._id
+            ? { ...item, quantity: item.quantity + 1 }
+            : item
         );
       } else {
         return [
@@ -49,8 +67,12 @@ export function ProductsSection() {
     alert(`${product.name} added to cart!`);
   };
 
-  if (loadingCategories || loadingProducts) return <p className="text-center py-10">Loading...</p>;
-  if (error) return <p className="text-center py-10 text-red-500">Failed to load products</p>;
+  if (loadingCategories || loadingProducts)
+    return <p className="text-center py-10">Loading...</p>;
+  if (error)
+    return (
+      <p className="text-center py-10 text-red-500">Failed to load products</p>
+    );
 
   return (
     <section className="py-16 bg-white relative">
@@ -67,14 +89,14 @@ export function ProductsSection() {
           <div className="flex space-x-2 bg-gray-100 rounded-lg p-1">
             {categories.map((category) => (
               <Button
-                key={category.id}
-                variant={selectedCategory === category.id ? "default" : "ghost"}
+                key={category._id}
+                variant={selectedCategory === category._id ? "default" : "ghost"}
                 className={`px-4 sm:px-6 py-2 sm:py-2.5 rounded-md transition-colors whitespace-nowrap ${
-                  selectedCategory === category.id
+                  selectedCategory === category._id
                     ? "bg-green-600 text-white hover:bg-green-700"
                     : "text-gray-600 hover:text-gray-900 hover:bg-white"
                 }`}
-                onClick={() => setSelectedCategory(category.id)}
+                onClick={() => setSelectedCategory(category._id)}
               >
                 {category.name}
               </Button>
@@ -87,7 +109,8 @@ export function ProductsSection() {
           {filteredProducts.map((product) => {
             const imgSrc =
               product.images && product.images[0]
-                ? product.images[0].startsWith("/") || product.images[0].startsWith("http")
+                ? product.images[0].startsWith("/") ||
+                  product.images[0].startsWith("http")
                   ? product.images[0]
                   : `/images/${product.images[0]}`
                 : "/images/placeholder.svg";
@@ -106,7 +129,9 @@ export function ProductsSection() {
                       className="object-cover group-hover:scale-105 transition-transform duration-300"
                     />
                   </div>
-                  <h3 className="font-semibold text-gray-900 text-lg text-center">{product.name}</h3>
+                  <h3 className="font-semibold text-gray-900 text-lg text-center">
+                    {product.name}
+                  </h3>
                   <p className="text-gray-600 mb-3 text-center">
                     <span className="text-sm">$</span>
                     <span className="text-lg font-bold">{product.price}</span>
