@@ -4,9 +4,8 @@ import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { Button } from "../ui/button";
-import { useAddProductMutation, useGetAllProductsQuery } from "@/redux/services/product/productApi";
+import { useGetAllProductsQuery, useAddProductMutation } from "@/redux/services/product/productApi";
 import { useGetAllCategoriesQuery } from "@/redux/services/category/categoryApi";
-
 
 export function ProductsSection() {
   const [selectedCategory, setSelectedCategory] = useState("all");
@@ -22,7 +21,7 @@ export function ProductsSection() {
   const { data: productsData, isLoading: loadingProducts, error } = useGetAllProductsQuery();
   const products = productsData?.results || [];
 
-  // Add product mutation
+  // Mutation for adding product
   const [addProduct, { isLoading: adding }] = useAddProductMutation();
 
   if (loadingCategories || loadingProducts) return <p className="text-center py-10">Loading...</p>;
@@ -110,11 +109,11 @@ export function ProductsSection() {
 
               {/* Add to Cart Button */}
               <Button
-                className="w-full sm:w-[220px] md:w-[258px] bg-orange-500 hover:bg-orange-600 text-white rounded-lg"
+                className="w-full sm:w-[220px] md:w-[258px] bg-blue-600 hover:bg-blue-700 text-white rounded-lg"
                 onClick={() => handleAddToCart({ _id, name, price, images })}
                 disabled={adding}
               >
-                {adding ? "Adding..." : "Add to cart"}
+                {adding ? "Adding..." : "Add to Cart"}
               </Button>
             </div>
           ))}
