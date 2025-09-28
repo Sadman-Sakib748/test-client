@@ -161,22 +161,23 @@ export default function NavBar() {
                   </div>
                 </div>
 
-                <div className="w-[300px] md:w-[350px] mr-[120px] lg:w-[320px] h-[140px] bg-white rounded-2xl shadow-md flex items-center justify-between p-5 hover:shadow-lg transition-shadow duration-300">
+                <div className="w-[240px] sm:w-[260px] md:w-[300px] lg:w-[320px] h-[120px] sm:h-[130px] md:h-[140px] bg-white rounded-xl shadow-md flex items-center justify-between p-3 sm:p-4 md:p-5 hover:shadow-lg transition-all duration-300
+            -mt-8 sm:-mt-10 md:-mt-12">
 
                   {/* Left Content */}
                   <div className="flex flex-col justify-center space-y-1">
-                    <p className="text-green-600 font-semibold text-sm md:text-base">Special Offer</p>
-                    <p className="text-gray-900 font-bold text-lg md:text-2xl">Fresh Salad</p>
-                    <p className="text-gray-700 text-sm md:text-base">
+                    <p className="text-green-600 font-semibold text-xs sm:text-sm md:text-base">Special Offer</p>
+                    <p className="text-gray-900 font-bold text-base sm:text-lg md:text-2xl">Fresh Salad</p>
+                    <p className="text-gray-700 text-xs sm:text-sm md:text-base">
                       Up to <span className="font-bold text-orange-500">70%</span> off
                     </p>
-                    <button className="bg-green-600 hover:bg-green-700 text-white font-bold text-xs md:text-sm px-4 py-1 rounded-full mt-2 shadow-sm">
+                    <button className="bg-green-600 hover:bg-green-700 text-white font-bold text-xs sm:text-sm px-3 py-1 rounded-full mt-2 shadow-sm">
                       CODE: FRESH25
                     </button>
                   </div>
 
                   {/* Right Image */}
-                  <div className="relative w-[100px] h-[100px] md:w-[120px] md:h-[120px] flex items-center justify-center">
+                  <div className="relative w-[80px] sm:w-[90px] md:w-[120px] h-[80px] sm:h-[90px] md:h-[120px] flex items-center justify-center">
                     <Image
                       src={dinner}
                       alt="Fresh Salad"
@@ -187,6 +188,8 @@ export default function NavBar() {
                   </div>
 
                 </div>
+
+
                 <div className="relative w-40 sm:w-48">
                   {/* Download Label */}
                   <p className="text-black font-semibold mt-12 relative z-10">Download App :</p>
